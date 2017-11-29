@@ -10,9 +10,17 @@ Date: 2017/05
 #include "ControllerConfiguration.h"
 #include "imgui\ImGuiObject.h"
 
+#include "MyRigidBody.h"
+
 class Application
 {
-	String m_sProgrammer = "";
+	Model* player = nullptr; //model to display
+	Model* crateOb = nullptr; //model to display
+	MyRigidBody* playerRB = nullptr; //Rigid Body of the model
+	MyRigidBody* crateObRB = nullptr; //Rigid Body of the model
+	vector3 playerMovement;
+	matrix4 playerMat;
+	String m_sProgrammer = "Herman McElveen/ Edward Opich/ Brandon Rodriguez/ James Meeks";
 private:
 	static ImGuiObject gui; //GUI object
 

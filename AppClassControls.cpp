@@ -396,23 +396,71 @@ void Application::ProcessKeyboard(void)
 	if (fMultiplier)
 		fSpeed *= 5.0f;
 
+	float speed = 0.1f;
+
+	glm::clamp(speed, 0.0f,0.1f);
+
+	/// Camera Movment
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-		m_pCameraMngr->MoveForward(fSpeed);
+	{
+		//m_pCameraMngr->MoveForward(fSpeed);
+	}
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-		m_pCameraMngr->MoveForward(-fSpeed);
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-		m_pCameraMngr->MoveSideways(-fSpeed);
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) 
+	{
+		//m_pCameraMngr->MoveForward(-fSpeed);
+	}
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) 
+	{
+		//m_pCameraMngr->MoveSideways(-fSpeed);
+	}
+		
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-		m_pCameraMngr->MoveSideways(fSpeed);
+	{
+		//m_pCameraMngr->MoveSideways(fSpeed);
+	}
+
+		
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
+	{
 		m_pCameraMngr->MoveVertical(-fSpeed);
+	}
+		
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::E))
+	{
 		m_pCameraMngr->MoveVertical(fSpeed);
+	}
+	/// Camera Movement
+
+	/// Player Movement
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && playerMovement.y < 8)
+	{
+		playerMovement.y += speed;
+	}
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && playerMovement.y > -3)
+	{
+		playerMovement.y -= speed;
+	}
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && playerMovement.x < 10)
+	{
+		playerMovement.x += speed;
+	}
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && playerMovement.x > -10)
+	{
+		playerMovement.x -= speed;
+	}
+
+	playerMat = glm::translate(playerMovement);
+	/// Player Movement
+		
 #pragma endregion
 }
 //Joystick

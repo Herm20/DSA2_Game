@@ -1,10 +1,19 @@
 #include "AppClass.h"
 void Application::InitVariables(void)
 {
-	m_sProgrammer = "";
+	m_sProgrammer = "Herman McElveen/ Edward Opich/ Brandon Rodriguez/ James Meeks";
+	playerMat = IDENTITY_M4;
+	playerMovement = ZERO_V3;
 
-	////Alberto needed this at this position for software recording.
-	//m_pWindow->setPosition(sf::Vector2i(710, 0));
+
+	player = new Model();
+	player->Load("FFmodel\\cube.obj");
+	playerRB = new MyRigidBody(player->GetVertexList());
+
+	//steve
+	crateOb = new Model();
+	crateOb->Load("FFmodel\\BoxCrate.obj");
+	crateObRB = new MyRigidBody(crateOb->GetVertexList());
 }
 void Application::Update(void)
 {
@@ -16,6 +25,30 @@ void Application::Update(void)
 
 	//Is the first person camera active?
 	CameraRotation();
+
+	player->SetModelMatrix(playerMat);
+	playerRB->SetModelMatrix(playerMat);
+	//m_pMeshMngr->AddAxisToRenderList(playerMat);
+
+	/// If a collision happens at 0,0,0 the program will break no idea why
+	matrix4 mCrate = glm::translate(vector3(3.0f, 0.0f, 0-3.0f));
+	crateOb->SetModelMatrix(mCrate);
+	crateObRB->SetModelMatrix(mCrate);
+	//m_pMeshMngr->AddAxisToRenderList(mCrate);
+
+	bool bColliding = playerRB->IsColliding(crateObRB);
+
+	player->AddToRenderList();
+	playerRB->AddToRenderList();
+
+	crateOb->AddToRenderList();
+	crateObRB->AddToRenderList();
+
+	m_pMeshMngr->Print("Colliding: ");
+	if (bColliding)
+		m_pMeshMngr->PrintLine("YES!", C_RED);
+	else
+		m_pMeshMngr->PrintLine("no", C_YELLOW);
 }
 void Application::Display(void)
 {
