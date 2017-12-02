@@ -5,12 +5,20 @@ void Application::InitVariables(void)
 	playerMat = IDENTITY_M4;
 	playerMovement = vector3(0.0f, 2.0f, 2.0f);
 	//playerMat = glm::translate(IDENTITY_M4, vector3(0.0f, 20.0f, 2.0f));
+	
+	
+	srand(std::time(NULL));
+	float horizontalStart = (rand() % 20) - 10;
+	float verticalStart = (rand() % 8) - 4;
+	
 
 	player = new Model();
-	player->Load("FFmodel\\cube.obj");
+	player->Load("FFmodel\\FreeFallMan.obj");
 	playerRB = new MyRigidBody(player->GetVertexList());
 
-	//steve
+	
+
+	//crate movement
 	for (uint i = 0; i < 1; i++)
 	{
 		crateOb.push_back(Model());
@@ -18,6 +26,8 @@ void Application::InitVariables(void)
 		crateObRB = new MyRigidBody(crateOb[0].GetVertexList());
 		mCrateMat.push_back(IDENTITY_M4);
 	}	
+
+	mCrateMat[0] = glm::translate(vector3(0.0f, 0.0f, -100.0f));
 }
 void Application::Update(void)
 {
@@ -33,20 +43,39 @@ void Application::Update(void)
 	player->SetModelMatrix(playerMat);
 	playerRB->SetModelMatrix(playerMat);
 	//m_pMeshMngr->AddAxisToRenderList(playerMat);
-
 	/// If a collision happens at 0,0,0 the program will break no idea why
+	matMove = vector3(horizontalStart, verticalStart, move);
+	mCrateMat[0] = glm::translate(matMove)  * glm::scale(vector3(1.5f));
+
+	move += 1.0f;
 
 	for (uint i = 0; i < 1; i++)
 	{
-		mCrateMat[0] = glm::translate(vector3(0.0f, 0.0f, -7.0f));
-
 		crateOb[i].SetModelMatrix(mCrateMat[i]);
 		crateObRB->SetModelMatrix(mCrateMat[i]);
 	}
-	
+
+	if (move >= 10)
+	{
+		horizontalStart = (rand() % 20) -10;
+		verticalStart = (rand() % 8) - 4;
+		move = -100;
+	}
+
 	//m_pMeshMngr->AddAxisToRenderList(mCrate);
 
 	bool bColliding = playerRB->IsColliding(crateObRB);
+
+	if (bColliding && colliding == false)
+	{
+		lives -= 1;
+		colliding = true;
+	}
+
+	if (!bColliding && colliding == true)
+	{
+		colliding = false;
+	}
 
 	player->AddToRenderList();
 	playerRB->AddToRenderList();

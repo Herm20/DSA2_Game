@@ -398,45 +398,7 @@ void Application::ProcessKeyboard(void)
 
 	float speed = 0.1f;
 
-	glm::clamp(speed, 0.0f,0.1f);
-
-	/// Camera Movment
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-
-	{
-		//m_pCameraMngr->MoveForward(fSpeed);
-	}
-
-
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) 
-	{
-		//m_pCameraMngr->MoveForward(-fSpeed);
-	}
-
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) 
-	{
-		//m_pCameraMngr->MoveSideways(-fSpeed);
-	}
-		
-
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-	{
-		//m_pCameraMngr->MoveSideways(fSpeed);
-	}
-
-		
-
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
-	{
-		m_pCameraMngr->MoveVertical(-fSpeed);
-	}
-		
-
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::E))
-	{
-		m_pCameraMngr->MoveVertical(fSpeed);
-	}
-	/// Camera Movement
+	glm::clamp(speed, 0.0f, 0.1f);
 
 	/// Player Movement
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && playerMovement.y < 8)
@@ -459,7 +421,19 @@ void Application::ProcessKeyboard(void)
 		playerMovement.x -= speed;
 	}
 
-	playerMat = glm::translate(playerMovement);
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
+	{
+		playerRot.x -= 2.0f;
+	}
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::E))
+	{
+		playerRot.y += 2.0f;
+	}
+
+	playerMat = glm::translate(playerMovement) * glm::scale(vector3(0.5f));
+	playerMat = glm::rotate(playerMat, playerRot.x, vector3(1.0f, 0.0f, 0.0f));
+	playerMat = glm::rotate(playerMat, playerRot.y, vector3(0.0f, 1.0f, 0.0f));
 	/// Player Movement
 		
 #pragma endregion

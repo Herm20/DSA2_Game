@@ -15,8 +15,12 @@ Date: 2017/05
 class Application
 {
 	uint lives = 3;
+	bool colliding = false;
 	Model* player = nullptr; //model to display
-
+	time_t time;
+	float horizontalStart;
+	float verticalStart;
+	vector3 playerRot = ZERO_V3;
 	//Model* crateOb = new Model[10]; //model to display
 	std::vector<Model> crateOb;
 	
@@ -24,6 +28,8 @@ class Application
 	MyRigidBody* playerRB = nullptr; //Rigid Body of the model
 	MyRigidBody* crateObRB = nullptr; //Rigid Body of the model
 	vector3 playerMovement;
+	vector3 matMove;
+	float move = -100.0f;
 	matrix4 playerMat;
 	std::vector<matrix4> mCrateMat;
 	String m_sProgrammer = "Herman McElveen/ Edward Opich/ Brandon Rodriguez/ James Meeks";
