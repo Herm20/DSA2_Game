@@ -11,6 +11,7 @@ Date: 2017/05
 #include "imgui\ImGuiObject.h"
 
 #include "MyRigidBody.h"
+#include "EntityManagerFF.h"
 
 class Application
 {
@@ -24,7 +25,7 @@ class Application
 	//Model* crateOb = new Model[10]; //model to display
 	std::vector<Model> crateOb;
 	
-
+	EntityManagerFF* entMan = nullptr;
 	MyRigidBody* playerRB = nullptr; //Rigid Body of the model
 	MyRigidBody* crateObRB = nullptr; //Rigid Body of the model
 	vector3 playerMovement;

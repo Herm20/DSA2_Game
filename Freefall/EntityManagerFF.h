@@ -35,8 +35,8 @@ namespace Simplex
 		// individual entity methods
 		Model* GetModel(uint index = -1);	// returns the model associated with this entity at this index
 		Model* GetModel(String uID);	// returns the model associated with this entity with this uID
-		RigidBody* GetRigidBody(uint index = -1);	// returns the rigidbody associated with this entity at this index
-		RigidBody* GetRigidBody(String uID);	// returns the rigidbody associated with this entity with this uID
+		MyRigidBody* GetRigidBody(uint index = -1);	// returns the rigidbody associated with this entity at this index
+		MyRigidBody* GetRigidBody(String uID);	// returns the rigidbody associated with this entity with this uID
 		matrix4 GetModelMatrix(uint index = -1);	// gets the model matrix for the entity
 		matrix4 GetModelMatrix(String uID);	// gets the model matrix for the entity
 		void SetModelMatrix(matrix4 m4World, uint index = -1);	// sets the model matrix for the entity

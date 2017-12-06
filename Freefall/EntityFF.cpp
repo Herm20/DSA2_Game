@@ -23,7 +23,7 @@ Model* Simplex::EntityFF::GetModel(void)
 	return model; 
 }
 
-RigidBody* Simplex::EntityFF::GetRigidBody(void)
+MyRigidBody* Simplex::EntityFF::GetRigidBody(void)
 { 
 	return rigidBody; 
 }
@@ -85,7 +85,7 @@ Simplex::EntityFF::EntityFF(String fileName, String uID)
 		GenUniqueID(uID);
 		uniqueID = uID;
 		IDMap[uID] = this;
-		rigidBody = new RigidBody(model->GetVertexList()); //generate a rigid body
+		rigidBody = new MyRigidBody(model->GetVertexList()); //generate a rigid body
 		inMemory = true; //mark this entity as viable
 	}
 }
@@ -94,7 +94,7 @@ Simplex::EntityFF::EntityFF(EntityFF const& other)
 	inMemory = other.inMemory;
 	model = other.model;
 	//generate a new rigid body we do not share the same rigid body as we do the model
-	rigidBody = new RigidBody(model->GetVertexList());
+	rigidBody = new MyRigidBody(model->GetVertexList());
 	m4World = other.m4World;
 	meshMngr = other.meshMngr;
 	uniqueID = other.uniqueID;

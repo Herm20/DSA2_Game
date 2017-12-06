@@ -16,11 +16,14 @@ void Application::InitVariables(void)
 	player->Load("FFmodel\\FreeFallMan.obj");
 	playerRB = new MyRigidBody(player->GetVertexList());
 
-	
+	// entity manager
+	entMan = EntityManagerFF::GetInstance();
 
 	//crate movement
 	for (uint i = 0; i < 1; i++)
 	{
+		// entMan->AddEntity("Minecraft\\BoxCrate.obj", "Crate");
+		// entMan->SetVisibility(true, "Crate");
 		crateOb.push_back(Model());
 		crateOb[i].Load("FFmodel\\BoxCrate.obj");
 		crateObRB = new MyRigidBody(crateOb[0].GetVertexList());

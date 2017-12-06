@@ -72,7 +72,7 @@ Model* Simplex::EntityManagerFF::GetModel(String uID)
 	}
 	return nullptr;
 }
-RigidBody* Simplex::EntityManagerFF::GetRigidBody(uint index)
+MyRigidBody* Simplex::EntityManagerFF::GetRigidBody(uint index)
 {
 	if (entityList.size() == 0)
 	{
@@ -86,7 +86,7 @@ RigidBody* Simplex::EntityManagerFF::GetRigidBody(uint index)
 
 	return entityList[index]->GetRigidBody();
 }
-RigidBody* Simplex::EntityManagerFF::GetRigidBody(String uID)
+MyRigidBody* Simplex::EntityManagerFF::GetRigidBody(String uID)
 {
 	EntityFF* pTemp = EntityFF::GetEntity(uID);
 
@@ -130,6 +130,28 @@ void Simplex::EntityManagerFF::SetModelMatrix(matrix4 m4ToWorld, String uID)
 	if (pTemp)
 	{
 		pTemp->SetModelMatrix(m4ToWorld);
+	}
+}
+void Simplex::EntityManagerFF::SetAxisVisibility(bool visibility, uint index)
+{
+	//if the list is empty return blank
+	if (entityList.size() == 0)
+		return;
+
+	// if out of bounds
+	if (index >= entityCount)
+		index = entityCount - 1;
+
+	return entityList[index]->SetAxisVisible(visibility);
+}
+void Simplex::EntityManagerFF::SetAxisVisibility(bool visibility, String uID)
+{
+	//Get the entity
+	EntityFF* pTemp = EntityFF::GetEntity(uID);
+	//if the entity exists
+	if (pTemp)
+	{
+		pTemp->SetAxisVisible(visibility);
 	}
 }
 void Simplex::EntityManagerFF::SetModelMatrix(matrix4 m4ToWorld, uint index)

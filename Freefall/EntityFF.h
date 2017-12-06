@@ -4,6 +4,7 @@
 #define __ENTITYFF_H_
 
 #include "Simplex\Physics\Solver.h"
+#include "MyRigidBody.h"
 
 namespace Simplex
 {
@@ -18,7 +19,7 @@ namespace Simplex
 		uint dimensionArray = 0;	//dimensions on hich this entity is located
 
 		Model* model = nullptr;	// model associated with this Entity
-		RigidBody* rigidBody = nullptr;	// rigidbody associated with this Entity
+		MyRigidBody* rigidBody = nullptr;	// rigidbody associated with this Entity
 
 		matrix4 m4World = IDENTITY_M4;	// Model matrix for the entity
 		MeshManager* meshMngr = nullptr;	
@@ -40,7 +41,7 @@ namespace Simplex
 		matrix4 GetModelMatrix(void);	// gets the model matrix for the entity
 		void SetModelMatrix(matrix4 m4World);	// sets the model matrix for the entity
 		Model* GetModel(void);	// returns the model associated with this entity
-		RigidBody* GetRigidBody(void);	// returns the Rigidbody associated with a model
+		MyRigidBody* GetRigidBody(void);	// returns the Rigidbody associated with a model
 		
 		bool IsInitialized(void);	// checks if the entity has been initialized
 		void AddToRenderList(bool drawRigidBody = false);	// adds entity to the render list
@@ -58,9 +59,9 @@ namespace Simplex
 		//void SortDimensions(void);	// sorts the array of dimensions
 		
 		void ClearCollisionList(void);	// clear collision list of the entity
-		RigidBody::PRigidBody* GetColliderArray(void);	// gets the array of rigid bodies pointer this entity is colliding with
+		//MyRigidBody::PRigidBody* GetColliderArray(void);	// gets the array of rigid bodies pointer this entity is colliding with
 		uint GetsCollidingCount(void);	// returns the number of colliding objects with this one
-		bool HasThisRigidBody(RigidBody* rigidBody);	// returns if the given rigidbody is the same as the one being used by the entity
+		bool HasThisRigidBody(MyRigidBody* rigidBody);	// returns if the given rigidbody is the same as the one being used by the entity
 		void ResolveCollision(EntityFF* other);	// asks the entity to resolve the collision with the incoming entity
 		
 		Solver* GetSolver(void);	// gets the solver applied to this entity
