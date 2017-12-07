@@ -11,6 +11,7 @@ namespace Simplex
 	class EntityManagerFF
 	{
 		// variables
+		bool colliding = false;
 		typedef EntityFF* PEntity;	// entity pointer
 		uint entityCount = 0;		// number of elements in the list
 		PEntity* entityArray = nullptr;	// array of entity pointers
@@ -18,6 +19,9 @@ namespace Simplex
 		std::vector<EntityFF*> entityList;
 
 	public:
+		// variables
+		double lives = 3;
+
 		// use -> to call
 		// helper methods
 		static EntityManagerFF* GetInstance();	// gets the singleton pointer

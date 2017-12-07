@@ -14,7 +14,7 @@ void Application::DrawGUI(void)
 	m_pMeshMngr->Print("RenderCalls: ");//Add a line on top
 	m_pMeshMngr->PrintLine(std::to_string(m_uRenderCallCount), C_YELLOW);
 	m_pMeshMngr->Print("Lives: ");
-	m_pMeshMngr->PrintLine(std::to_string(lives));
+	m_pMeshMngr->PrintLine(std::to_string(std::llround(std::ceil(entMan->lives))));
 	//ImGui::Text("   Score: \n");
 	//ImGui::TextColored(v4Color, std::to_string(lives).c_str());
 

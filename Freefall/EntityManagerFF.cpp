@@ -176,13 +176,27 @@ EntityManagerFF::~EntityManagerFF() { Release(); };
 // other methods
 void Simplex::EntityManagerFF::Update(void)
 {
+	bool myBool = false;
+
 	// check collisions
-	for (int x = 0; x < entityCount; x++)
+	for (int x = 0; x < entityCount -1; x++)
 	{
-		for (int y = 0; y < entityCount; y++)
+		for (int y = x + 1; y < entityCount; y++)
 		{
+			if (entityList[0]->IsColliding(entityList[y]) && colliding == false)
+			{
+				lives = lives - .5;
+				colliding = true;
+				myBool = true;
+			}
+			
 			entityList[x]->IsColliding(entityList[y]);
 		}
+	}
+
+	if (!myBool)
+	{
+		colliding = false;
 	}
 }
 void Simplex::EntityManagerFF::AddEntity(String a_sFileName, String uID)
