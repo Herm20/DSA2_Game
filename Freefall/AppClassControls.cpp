@@ -401,34 +401,49 @@ void Application::ProcessKeyboard(void)
 	glm::clamp(speed, 0.0f, 0.1f);
 
 	/// Player Movement
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && playerMovement.y < 8)
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && playerMovement.y < 5.5)
 	{
 		playerMovement.y += speed;
 	}
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && playerMovement.y > -3)
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && playerMovement.y > -1)
 	{
 		playerMovement.y -= speed;
 	}
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && playerMovement.x < 10)
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && playerMovement.x < 8)
 	{
 		playerMovement.x += speed;
 	}
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && playerMovement.x > -10)
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && playerMovement.x > -8)
 	{
 		playerMovement.x -= speed;
 	}
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
 	{
 		playerRot.x -= 2.0f;
 	}
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::E))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+	{
+		playerRot.y -= 2.0f;
+	}
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+	{
+		playerRot.x += 2.0f;
+	}
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
 	{
 		playerRot.y += 2.0f;
+	}
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return))
+	{
+		Application::ShutdownGUI();
 	}
 
 	playerMat = glm::translate(playerMovement) * glm::scale(vector3(0.5f));

@@ -183,13 +183,23 @@ void Simplex::EntityManagerFF::Update(void)
 	{
 		for (int y = x + 1; y < entityCount; y++)
 		{
+			// don't check the ground plane
+			if (y == 1 || x == 1)
+			{
+				continue;
+			}
+
 			if (entityList[0]->IsColliding(entityList[y]) && colliding == false)
 			{
-				lives = lives - .5;
+				lives--;
 				colliding = true;
 				myBool = true;
+
+				entityList[y]->move = -200.0f;
+				entityList[y]->horiStart = (rand() % 30) - 15;
+				entityList[y]->vertStart = (rand() % 30) - 10;
 			}
-			
+
 			entityList[x]->IsColliding(entityList[y]);
 		}
 	}

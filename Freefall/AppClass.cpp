@@ -18,40 +18,25 @@ void Application::InitVariables(void)
 		//player->Load("FFmodel\\FreeFallMan.obj");
 		//playerRB = new MyRigidBody(player->GetVertexList());
 
+	// add the character to the entity manager
 	entMan->AddEntity("FFmodel\\FreeFallMan.obj", "FFMan");
 	entMan->SetAxisVisibility(true, "FFMan");
 
-	entMan->AddEntity("FFmodel\\BoxCrate.obj", "Debris_0");
-	entMan->SetAxisVisibility(true, "Debris_0");
-	mCrateMat.push_back(IDENTITY_M4);
-	move.push_back(-80.0f);
-	horiStart.push_back((rand() % 20) - 10);
-	vertStart.push_back((rand() % 8) - 4);
-	moveVec.push_back(vector3(0.0f, 0.0f, 0.0f));
+	// render plane
+	entMan->AddEntity("FFmodel\\Ground.obj", "ground");
+	entMan->SetModelMatrix(glm::translate(glm::vec3(0.0f, 0.0f, -600.0f)) * glm::rotate(IDENTITY_M4, 90.0f, 1.0f, 0.0f, 0.0f));
+	entMan->SetAxisVisibility(true, "ground");
 
-	entMan->AddEntity("FFmodel\\BoxCrate.obj", "Debris_1");
-	entMan->SetAxisVisibility(true, "Debris_1");
-	mCrateMat.push_back(IDENTITY_M4);
-	move.push_back(-100.0f);
-	horiStart.push_back((rand() % 20) - 10);
-	vertStart.push_back((rand() % 8) - 4);
-	moveVec.push_back(vector3(0.0f, 0.0f, 0.0f));
-
-	entMan->AddEntity("FFmodel\\BoxCrate.obj", "Debris_2");
-	entMan->SetAxisVisibility(true, "Debris_2");
-	mCrateMat.push_back(IDENTITY_M4);
-	move.push_back(-120.0f);
-	horiStart.push_back((rand() % 20) - 10);
-	vertStart.push_back((rand() % 8) - 4);
-	moveVec.push_back(vector3(0.0f, 0.0f, 0.0f));
-
-	entMan->AddEntity("FFmodel\\RoundCrate.obj", "Debris_3");
-	entMan->SetAxisVisibility(true, "Debris_3");
-	mCrateMat.push_back(IDENTITY_M4);
-	move.push_back(-150.0f);
-	horiStart.push_back((rand() % 20) - 10);
-	vertStart.push_back((rand() % 8) - 4);
-	moveVec.push_back(vector3(0.0f, 0.0f, 0.0f));
+	for (int x = 0; x < 25; x++)
+	{
+		entMan->AddEntity("FFmodel\\RoundCrate.obj", "Debris_" + std::to_string(x));
+		entMan->SetAxisVisibility(true, "Debris_" + std::to_string(x));
+		mCrateMat.push_back(IDENTITY_M4);
+		entMan->entityList[x + 2]->move = -100.0f + (-1 * (x + 2) * 10);
+		entMan->entityList[x + 2]->horiStart = (rand() % 30) - 15;
+		entMan->entityList[x + 2]->vertStart = (rand() % 30) - 15;
+		moveVec.push_back(vector3(0.0f, 0.0f, 0.0f));
+	}
 	
 		//crate movement
 		//for (uint i = 0; i < 1; i++)
@@ -79,27 +64,27 @@ void Application::Update(void)
 	
 	// character movement
 	entMan->SetModelMatrix(playerMat, "FFMan");
-	
+
 	// debris movement
 	for (int x = 0; x < mCrateMat.size(); x++)
 	{
 		mCrateMat[x] = glm::translate(moveVec[x])  * glm::scale(vector3(1.5f));
 		entMan->SetModelMatrix(mCrateMat[x], "Debris_" + std::to_string(x));
 
-		moveVec[x] = vector3(horiStart[x], vertStart[x], move[x]);
+		moveVec[x] = vector3(entMan->entityList[x + 2]->horiStart, entMan->entityList[x + 2]->vertStart, entMan->entityList[x + 2]->move);
 	}
 
-	for (int x = 0; x < move.size(); x++)
+	for (int x = 2; x < entMan->entityList.size(); x++)
 	{
 		// move debris objects forward
-		move[x] += 1.0f;
+		entMan->entityList[x]->move += 1.0f;
 
 		// randomize respawn location of debris
-		if (move[x] >= 10)
+		if (entMan->entityList[x]->move >= 10)
 		{
-			horiStart[x] = (rand() % 20) - 10;
-			vertStart[x] = (rand() % 8) - 4;
-			move[x] = -100;
+			entMan->entityList[x]->horiStart = (rand() % 30) - 15;
+			entMan->entityList[x]->horiStart = (rand() % 30) - 15;
+			entMan->entityList[x]->move = -200;
 		}
 	}
 
@@ -111,26 +96,24 @@ void Application::Update(void)
 			*/
 	
 	// check collisions in the entity manager after a certain point
-	//if (time > 5)
-	{
-		entMan->Update();
-	}
+	entMan->Update();
 
 	// render the entities
 	entMan->AddEntityToRenderList(-1, true);
 
-	//if (entMan->lives < 0.5)
+	if (entMan->lives < 1)
 	{
 		// end the game
+		exit(0);
 	}
 }
 void Application::Display(void)
 {
 	// Clear the screen
 	ClearScreen();
-	
-	// draw a skybox
-	m_pMeshMngr->AddSkyboxToRenderList();
+
+	//draw ground plane
+	//m_pMeshMngr->AddPlaneToRenderList(), C_WHITE, 1);
 	
 	//render list call
 	m_uRenderCallCount = m_pMeshMngr->Render();

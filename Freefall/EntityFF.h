@@ -25,11 +25,16 @@ namespace Simplex
 		MeshManager* meshMngr = nullptr;	
 
 		static std::map<String, EntityFF*> IDMap;	// a map of the unique IDs
-		
+
 		bool physicsSolver = false;
 		//Solver* solver = nullptr;	// physics solver
 
 	public:
+		// variables 
+		float move;
+		float horiStart;
+		float vertStart;
+
 		// rule of three
 		EntityFF(String filename, String UniqueID = "NA");
 		EntityFF(EntityFF const& other);

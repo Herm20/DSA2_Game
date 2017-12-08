@@ -36,9 +36,9 @@ class Application
 	// debris variables
 	std::vector<matrix4> mCrateMat;
 	std::vector<vector3> moveVec;
-	std::vector<float> horiStart;
-	std::vector<float> vertStart;
-	std::vector<float> move;
+	//std::vector<float> horiStart;
+	//std::vector<float> vertStart;
+	//std::vector<float> move;
 
 	String m_sProgrammer = "Herman McElveen/ Edward Opich/ Brandon Rodriguez/ James Meeks";
 private:

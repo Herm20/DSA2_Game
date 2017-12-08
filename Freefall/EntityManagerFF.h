@@ -16,11 +16,12 @@ namespace Simplex
 		uint entityCount = 0;		// number of elements in the list
 		PEntity* entityArray = nullptr;	// array of entity pointers
 		static EntityManagerFF* instance;	// singleton pointer
-		std::vector<EntityFF*> entityList;
+		//std::vector<EntityFF*> entityList;
 
 	public:
 		// variables
-		double lives = 3;
+		std::vector<EntityFF*> entityList;
+		int lives = 5;
 
 		// use -> to call
 		// helper methods
