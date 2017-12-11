@@ -11,34 +11,28 @@ Date: 2017/05
 #include "imgui\ImGuiObject.h"
 
 #include "MyRigidBody.h"
-#include "EntityManagerFF.h"
+#include "Octree.h"
 
 class Application
 {
 	EntityManagerFF* entMan = nullptr;
 
 	// game variables
-	//uint lives = 3;
 	time_t time;
-
-	//bool colliding = false;
-	//Model* player = nullptr; //model to display
-	//Model* crateOb = new Model[10]; //model to display
-	//std::vector<Model> crateOb;
-	//MyRigidBody* playerRB = nullptr; //Rigid Body of the model
-	//MyRigidBody* crateObRB = nullptr; //Rigid Body of the model
 
 	// player variables
 	vector3 playerMovement;
 	vector3 playerRot = ZERO_V3;
 	matrix4 playerMat;
+	uint m_uOctantID = -1; //Index of Octant to display
+	uint m_uObjects = 0; //Number of objects in the scene
+	uint m_uOctantLevels = 0; //Number of levels in the octree
+	Octree* root = nullptr;
+	bool octOptimize = true;
 
 	// debris variables
 	std::vector<matrix4> mCrateMat;
 	std::vector<vector3> moveVec;
-	//std::vector<float> horiStart;
-	//std::vector<float> vertStart;
-	//std::vector<float> move;
 
 	String m_sProgrammer = "Herman McElveen/ Edward Opich/ Brandon Rodriguez/ James Meeks";
 private:

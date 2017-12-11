@@ -4,24 +4,20 @@ void Application::DrawGUI(void)
 {
 #pragma region Debugging Information
 	//Print info on the screen
-	uint nEmptyLines = 21;
+	uint nEmptyLines = 20;
 	for (uint i = 0; i < nEmptyLines; ++i)
-		m_pMeshMngr->PrintLine("");//Add a line on top
-	//m_pMeshMngr->Print("						");
+		m_pMeshMngr->PrintLine("");//Add a line on top				");
 	m_pMeshMngr->PrintLine(m_pSystem->GetAppName(), C_YELLOW);
-	
-	//m_pMeshMngr->Print("						");
+
 	m_pMeshMngr->Print("RenderCalls: ");//Add a line on top
 	m_pMeshMngr->PrintLine(std::to_string(m_uRenderCallCount), C_YELLOW);
+
 	m_pMeshMngr->Print("Lives: ");
 	m_pMeshMngr->PrintLine(std::to_string(std::llround(std::ceil(entMan->lives))));
-	//ImGui::Text("   Score: \n");
-	//ImGui::TextColored(v4Color, std::to_string(lives).c_str());
 
-	//m_pMeshMngr->Print("						");
 	m_pMeshMngr->Print("FPS:");
 	m_pMeshMngr->Print(std::to_string(m_pSystem->GetFPS()), C_RED);
-#pragma endregion
+
 
 	//Calculate the window size to know how to draw
 	NewFrame();
@@ -37,14 +33,29 @@ void Application::DrawGUI(void)
 		{
 			ImGui::Text("Programmers: \n");
 			ImGui::TextColored(v4Color, m_sProgrammer.c_str());
-			ImGui::Text("FrameRate: %.2f [FPS] -> %.3f [ms/frame]\n",
-				ImGui::GetIO().Framerate, 1000.0f / ImGui::GetIO().Framerate);
-			ImGui::Text("Control:\n");
-			ImGui::Text("   Arrow Keys: Movement\n");
+			ImGui::Text("Arrow Keys: Movement\n");
+			ImGui::Separator();
+			ImGui::Text("WASD: Rotation\n");
+			ImGui::Separator();
+			ImGui::Text("Z: Octree Toggle\n");
+			ImGui::Separator();
+			ImGui::Text("+-: Increase/decrease Octree subdivisions\n");
+			ImGui::Separator();
+
+			//show octree status
+			if (octOptimize == true)
+			{
+				ImGui::Text("Octree: On level %d", m_uOctantLevels);
+			}
+			else
+			{
+				ImGui::Text("Octree: Off\n");
+			}
 		}
 		ImGui::End();
 	}
-	
+#pragma endregion
+
 	//Controller Debugger
 	if (false) //if you want to enable the controller debugger window just make this true
 	{
@@ -63,7 +74,6 @@ void Application::DrawGUI(void)
 			// How many buttons does joystick #0 support?
 			unsigned int buttons = sf::Joystick::getButtonCount(m_uActCont);
 			ImGui::Text("Buttons: %d", buttons);
-			//ImGui::TextColored(v4Color, "-------------------------------------------");
 			ImGui::TextColored(v4Color, "-------------------------");
 			ImGui::Text("		Key  A: %d", m_pController[m_uActCont]->button[SimplexKey_A]);
 			ImGui::Text("		Key  B: %d", m_pController[m_uActCont]->button[SimplexKey_B]);
@@ -362,7 +372,6 @@ void Application::InitIMGUI(void)
 	io.RenderDrawListsFn = NULL; // = RenderDrawListsFunction;
 	io.SetClipboardTextFn = NULL;
 	io.GetClipboardTextFn = NULL;
-	//io.ClipboardUserData = NULL;
 	io.ClipboardUserData = m_pWindow;
 	io.ImeWindowHandle = m_pWindow->getSystemHandle();
 
@@ -393,6 +402,5 @@ void Application::ShutdownGUI(void)
 		ImGui::GetIO().Fonts->TexID = 0;
 		gui.m_uFontTexture = 0;
 	}
-
 	ImGui::Shutdown();
 }

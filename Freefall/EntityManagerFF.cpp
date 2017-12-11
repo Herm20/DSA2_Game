@@ -189,13 +189,23 @@ void Simplex::EntityManagerFF::Update(void)
 				continue;
 			}
 
+			//if the player collides with anything
 			if (entityList[0]->IsColliding(entityList[y]) && colliding == false)
 			{
 				lives--;
 				colliding = true;
 				myBool = true;
 
+				//move colliding object
 				entityList[y]->move = -200.0f;
+				entityList[y]->horiStart = (rand() % 30) - 15;
+				entityList[y]->vertStart = (rand() % 30) - 10;
+			}
+
+			//if any objects collide with each other excluding the player
+			else if (entityList[x]->IsColliding(entityList[y]))
+			{
+				entityList[y]->move = (rand() % -200) - 10 * y;
 				entityList[y]->horiStart = (rand() % 30) - 15;
 				entityList[y]->vertStart = (rand() % 30) - 10;
 			}
@@ -276,6 +286,10 @@ EntityFF* Simplex::EntityManagerFF::GetEntity(uint index)
 
 	return entityList[index];
 }
+uint Simplex::EntityManagerFF::GetEntityCount(void)
+{
+	return entityCount;
+}
 void Simplex::EntityManagerFF::AddEntityToRenderList(uint index, bool rigidBody)
 {
 	if (index >= entityCount)
@@ -300,3 +314,139 @@ void Simplex::EntityManagerFF::AddEntityToRenderList(String uID, bool rigidBody)
 	}
 }
 
+void Simplex::EntityManagerFF::RemoveDimension(uint a_uIndex, uint a_uDimension)
+{
+	//if the list is empty return
+	if (entityCount == 0)
+		return;
+
+	//if the index is larger than the number of entries we are asking for the last one
+	if (a_uIndex >= entityCount)
+	{
+		a_uIndex = entityCount - 1;
+	}
+		
+	return entityList[a_uIndex]->RemoveDimension(a_uDimension);
+}
+
+void Simplex::EntityManagerFF::RemoveDimension(String a_sUniqueID, uint a_uDimension)
+{
+	//Get the entity
+	EntityFF* pTemp = EntityFF::GetEntity(a_sUniqueID);
+	//if the entity exists
+	if (pTemp)
+	{
+		pTemp->RemoveDimension(a_uDimension);
+	}
+}
+
+void Simplex::EntityManagerFF::ClearDimensionSetAll(void)
+{
+	for (uint i = 0; i < entityCount; ++i)
+	{
+		ClearDimensionSet(i);
+	}
+}
+void Simplex::EntityManagerFF::ClearDimensionSet(uint a_uIndex)
+{
+	//if the list is empty return
+	if (entityCount == 0)
+		return;
+
+	//if the index is larger than the number of entries we are asking for the last one
+	if (a_uIndex >= entityCount)
+		a_uIndex = entityCount - 1;
+
+	return entityList[a_uIndex]->ClearDimensionSet();
+}
+void Simplex::EntityManagerFF::ClearDimensionSet(String a_sUniqueID)
+{
+	//Get the entity
+	EntityFF* pTemp = EntityFF::GetEntity(a_sUniqueID);
+	//if the entity exists
+	if (pTemp)
+	{
+		pTemp->ClearDimensionSet();
+	}
+}
+
+void Simplex::EntityManagerFF::AddDimension(String a_sUniqueID, uint a_uDimension)
+{
+	//Get the entity
+	EntityFF* pTemp = EntityFF::GetEntity(a_sUniqueID);
+	//if the entity exists
+	if (pTemp)
+	{
+		pTemp->AddDimension(a_uDimension);
+	}
+}
+
+void Simplex::EntityManagerFF::AddDimension(uint a_uIndex, uint a_uDimension)
+{
+	//if the list is empty return
+	if (entityCount == 0)
+		return;
+
+	//if the index is larger than the number of entries we are asking for the last one
+	if (a_uIndex >= entityCount)
+		a_uIndex = entityCount - 1;
+
+	return entityList[a_uIndex]->AddDimension(a_uDimension);
+}
+
+bool Simplex::EntityManagerFF::IsInDimension(String a_sUniqueID, uint a_uDimension)
+{
+	//Get the entity
+	EntityFF* pTemp = EntityFF::GetEntity(a_sUniqueID);
+	//if the entity exists
+	if (pTemp)
+	{
+		return pTemp->IsInDimension(a_uDimension);
+	}
+	return false;
+}
+
+bool Simplex::EntityManagerFF::IsInDimension(uint a_uIndex, uint a_uDimension)
+{
+	//if the list is empty return
+	if (entityCount == 0)
+	{
+		return false;
+	}
+
+	//if the index is larger than the number of entries we are asking for the last one
+	if (a_uIndex >= entityCount)
+	{
+		a_uIndex = entityCount - 1;
+	}
+		
+
+	return entityList[a_uIndex]->IsInDimension(a_uDimension);
+}
+
+bool Simplex::EntityManagerFF::SharesDimension(uint a_uIndex, EntityFF * const a_pOther)
+{
+	//if the list is empty return
+	if (entityCount == 0)
+		return false;
+
+	//if the index is larger than the number of entries we are asking for the last one
+	if (a_uIndex >= entityCount)
+	{
+		a_uIndex = entityCount - 1;
+	}
+		
+	return entityList[a_uIndex]->SharesDimension(a_pOther);
+}
+
+bool Simplex::EntityManagerFF::SharesDimension(String a_sUniqueID, EntityFF * const a_pOther)
+{
+	//Get the entity
+	EntityFF* pTemp = EntityFF::GetEntity(a_sUniqueID);
+	//if the entity exists
+	if (pTemp)
+	{
+		return pTemp->SharesDimension(a_pOther);
+	}
+	return false;
+}

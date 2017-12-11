@@ -42,6 +42,110 @@ void Simplex::EntityFF::SetAxisVisible(bool axis)
 	setAxis = axis; 
 }
 
+void Simplex::EntityFF::AddDimension(uint dimension)
+{
+	//we need to check that this dimension is not already allocated in the list
+	if (IsInDimension(dimension))
+		return;//it is, so there is no need to add
+
+			   //insert the entry
+	uint* pTemp;
+	pTemp = new uint[m_nDimensionCount + 1];
+	if (m_DimensionArray)
+	{
+		memcpy(pTemp, m_DimensionArray, sizeof(uint) * m_nDimensionCount);
+		delete[] m_DimensionArray;
+		m_DimensionArray = nullptr;
+	}
+	pTemp[m_nDimensionCount] = dimension;
+	m_DimensionArray = pTemp;
+
+	++m_nDimensionCount;
+
+	SortDimensions();
+}
+
+void Simplex::EntityFF::RemoveDimension(uint dimension)
+{
+	//if there are no dimensions return
+	if (m_nDimensionCount == 0)
+		return;
+
+	//we look one by one if its the one wanted
+	for (uint i = 0; i < m_nDimensionCount; i++)
+	{
+		if (m_DimensionArray[i] == dimension)
+		{
+			//if it is, then we swap it with the last one and then we pop
+			std::swap(m_DimensionArray[i], m_DimensionArray[m_nDimensionCount - 1]);
+			uint* pTemp;
+			pTemp = new uint[m_nDimensionCount - 1];
+			if (m_DimensionArray)
+			{
+				memcpy(pTemp, m_DimensionArray, sizeof(uint) * (m_nDimensionCount - 1));
+				delete[] m_DimensionArray;
+				m_DimensionArray = nullptr;
+			}
+			m_DimensionArray = pTemp;
+
+			--m_nDimensionCount;
+			SortDimensions();
+			return;
+		}
+	}
+}
+
+void Simplex::EntityFF::ClearDimensionSet(void)
+{
+	if (m_DimensionArray)
+	{
+		delete[] m_DimensionArray;
+		m_DimensionArray = nullptr;
+	}
+	m_nDimensionCount = 0;
+}
+
+bool Simplex::EntityFF::IsInDimension(uint dimension)
+{
+	//see if the entry is in the set
+	for (uint i = 0; i < m_nDimensionCount; i++)
+	{
+		if (m_DimensionArray[i] == dimension)
+			return true;
+	}
+	return false;
+}
+
+bool Simplex::EntityFF::SharesDimension(EntityFF * const other)
+{
+	//special case: if there are no dimensions on either MyEntity
+	//then they live in the special global dimension
+	if (0 == m_nDimensionCount)
+	{
+		//if no spatial optimization all cases should fall here as every 
+		//entity is by default, under the special global dimension only
+		if (0 == other->m_nDimensionCount)
+			return true;
+	}
+
+	//for each dimension on both Entities we check if there is a common dimension
+	for (uint i = 0; i < m_nDimensionCount; ++i)
+	{
+		for (uint j = 0; j < other->m_nDimensionCount; j++)
+		{
+			if (m_DimensionArray[i] == other->m_DimensionArray[j])
+				return true; //as soon as we find one we know they share dimensionality
+		}
+	}
+	//could not find a common dimension
+	return false;
+}
+
+void Simplex::EntityFF::SortDimensions(void)
+{
+	std::sort(m_DimensionArray, m_DimensionArray + m_nDimensionCount);
+}
+
 //  Entity
 void Simplex::EntityFF::Init(void)
 {

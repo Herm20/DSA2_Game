@@ -15,8 +15,8 @@ namespace Simplex
 		bool setAxis = false;	// checks if axis has been set
 		String uniqueID = "";	// unique object identifier name
 
-		uint dimensionCount = 0;	// how many dimensions does this object exist in
-		uint dimensionArray = 0;	//dimensions on hich this entity is located
+		uint m_nDimensionCount = 0; //tells how many dimensions this entity lives in
+		uint* m_DimensionArray = nullptr; //Dimensions on which this entity is located
 
 		Model* model = nullptr;	// model associated with this Entity
 		MyRigidBody* rigidBody = nullptr;	// rigidbody associated with this Entity
@@ -56,12 +56,12 @@ namespace Simplex
 		String GetUniqueID(void);	// returns the unique ID of this entity
 		void SetAxisVisible(bool axis = true);	// set the axis visibility of the entity
 		
-		//void AddDimension(uint dimension);	// will set an entity to the given integer
-		//void RemoveDimension(uint dimension);	// will remove the entity from the specified dimension
-		//void ClearDimensionSet(void);	// remove all dimensions from entity
-		//bool IsInDimension(uint dimension);	// checks if an entity is in a given dimension
-		//bool SharesDimension(Entity* const other);	// checks if this entity and the other entity share the same dimensional space
-		//void SortDimensions(void);	// sorts the array of dimensions
+		void AddDimension(uint dimension);	// will set an entity to the given integer
+		void RemoveDimension(uint dimension);	// will remove the entity from the specified dimension
+		void ClearDimensionSet(void);	// remove all dimensions from entity
+		bool IsInDimension(uint dimension);	// checks if an entity is in a given dimension
+		bool SharesDimension(EntityFF* const other);	// checks if this entity and the other entity share the same dimensional space
+		void SortDimensions(void);	// sorts the array of dimensions
 		
 		void ClearCollisionList(void);	// clear collision list of the entity
 		//MyRigidBody::PRigidBody* GetColliderArray(void);	// gets the array of rigid bodies pointer this entity is colliding with

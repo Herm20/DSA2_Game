@@ -104,30 +104,23 @@ void Application::ProcessKeyReleased(sf::Event a_event)
 		bFPSControl = !bFPSControl;
 		m_pCameraMngr->SetFPS(bFPSControl);
 		break;
+
+	case sf::Keyboard::Z:
+		octOptimize = !octOptimize;
+		break;
+
 	case sf::Keyboard::Add:
-		++m_uActCont;
-		m_uActCont %= 8;
-		if (m_uControllerCount > 0)
+		if (m_uOctantLevels < 4)
 		{
-			while (m_pController[m_uActCont]->uModel == SimplexController_NONE)
-			{
-				++m_uActCont;
-				m_uActCont %= 8;
-			}
+			entMan->ClearDimensionSetAll();
+			++m_uOctantLevels;
 		}
 		break;
 	case sf::Keyboard::Subtract:
-		--m_uActCont;
-		if (m_uActCont > 7)
-			m_uActCont = 7;
-		if (m_uControllerCount > 0)
+		if (m_uOctantLevels > 0)
 		{
-			while (m_pController[m_uActCont]->uModel == SimplexController_NONE)
-			{
-				--m_uActCont;
-				if (m_uActCont > 7)
-					m_uActCont = 7;
-			}
+			entMan->ClearDimensionSetAll();
+			--m_uOctantLevels;
 		}
 		break;
 	}
@@ -153,7 +146,6 @@ void Application::ProcessJoystickConnected(uint nController)
 		int nVendorID = joyID.vendorId;
 		int nProductID = joyID.productId;
 		m_pController[nController] = new ControllerInput(nVendorID, nProductID);
-		//m_pWindow->setJoystickThreshold(7);
 		++m_uControllerCount;
 	}
 }
@@ -393,59 +385,62 @@ void Application::ProcessKeyboard(void)
 	float fMultiplier = sf::Keyboard::isKeyPressed(sf::Keyboard::LShift) ||
 		sf::Keyboard::isKeyPressed(sf::Keyboard::RShift);
 
-	if (fMultiplier)
-		fSpeed *= 5.0f;
-
 	float speed = 0.1f;
 
-	glm::clamp(speed, 0.0f, 0.1f);
+	if (fMultiplier)
+		speed * 2.0f;
+
+	glm::clamp(speed, 0.0f, 0.3f);
 
 	/// Player Movement
+	// move player up
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && playerMovement.y < 5.5)
 	{
 		playerMovement.y += speed;
 	}
 
+	// move player down
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && playerMovement.y > -1)
 	{
 		playerMovement.y -= speed;
 	}
 
+	// move player right
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && playerMovement.x < 8)
 	{
 		playerMovement.x += speed;
 	}
 
+	// move keyboard left
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && playerMovement.x > -8)
 	{
 		playerMovement.x -= speed;
 	}
 
+	// rotate player up
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
 	{
 		playerRot.x -= 2.0f;
 	}
 
+	// rotate player left
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
 	{
 		playerRot.y -= 2.0f;
 	}
 
+	// rotate player down
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
 	{
 		playerRot.x += 2.0f;
 	}
 
+	// rotate player right
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
 	{
 		playerRot.y += 2.0f;
 	}
-
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return))
-	{
-		Application::ShutdownGUI();
-	}
-
+	//move the player
 	playerMat = glm::translate(playerMovement) * glm::scale(vector3(0.5f));
 	playerMat = glm::rotate(playerMat, playerRot.x, vector3(1.0f, 0.0f, 0.0f));
 	playerMat = glm::rotate(playerMat, playerRot.y, vector3(0.0f, 1.0f, 0.0f));

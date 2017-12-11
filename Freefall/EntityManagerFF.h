@@ -50,22 +50,29 @@ namespace Simplex
 		void SetAxisVisibility(bool visibility, String uID);	// sets the axis visibility based on the uID
 		void AddEntityToRenderList(uint index = -1, bool rigidBody = false);	// will add the entity to the render list
 		void AddEntityToRenderList(String uID, bool rigidBody = false);	// will add the entity to the render list
-		
-		// physics methods
-		void ApplyForce(vector3 v3Force, uint index = -1);	// applies a force to the solver
-		void ApplyForce(vector3 v3Force, String uID);	// applies a force to the solver
-		void SetPosition(vector3 v3Position, uint index = -1);	// sets the position of the solver
-		void SetPosition(vector3 v3Position, String uID);	// sets the position of the solver
-		void SetMass(float mass, uint index = -1);	// sets mass ofthe solver
-		void SetMass(float mass, String uID);	// sets mass ofthe solver
-		void SetVelocity(vector3 v3Velocity, uint index = -1);	// sets the velocity of the solver
-		void SetVelocity(vector3 v3Velocity, String uID);	// sets the velocity of the solver
-		void UsePhysicsSolver(bool use = true, uint index = -1);	// resolves using physics solver or not in the update
-		void UsePhysicsSolver(String uID, bool use = true);	// resolves using physics solver or not in the update
 
-		// dimension methods
-			// later
-	
+		void RemoveDimension(uint a_uIndex, uint a_uDimension);
+
+		void RemoveDimension(String a_sUniqueID, uint a_uDimension);
+
+		void ClearDimensionSetAll(void);
+
+		void ClearDimensionSet(uint a_uIndex);
+
+		void ClearDimensionSet(String a_sUniqueID);
+
+		void AddDimension(String a_sUniqueID, uint a_uDimension);
+
+		void AddDimension(uint a_uIndex, uint a_uDimension);
+
+		bool IsInDimension(String a_sUniqueID, uint a_uDimension);
+
+		bool IsInDimension(uint a_uIndex, uint a_uDimension);
+
+		bool SharesDimension(uint a_uIndex, EntityFF* const a_pOther);
+
+		bool SharesDimension(String a_sUniqueID, EntityFF* const a_pOther);
+
 	private:
 		// rule of three
 		EntityManagerFF(void);	// constructor
